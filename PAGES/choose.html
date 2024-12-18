@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      :root {
+        --glow-color: hsl(128, 100%, 69%);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        background-color: #000;
+        font-family: "Montserrat", "Arial", sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        height: 100vh;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .glowing-btn {
+        position: relative;
+        color: var(--glow-color);
+        cursor: pointer;
+        padding: 0.35em 1em;
+        border: 0.15em solid var(--glow-color);
+        border-radius: 0.45em;
+        background: none;
+        perspective: 1em;
+        font-family: "Raleway", sans-serif;
+        font-size: 1em; /* Changed font size for better readability */
+        font-weight: 900;
+        letter-spacing: 0.1em; /* Adjusted letter spacing */
+        margin-bottom: 20px; /* Added margin for spacing between buttons */
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .glowing-btn span {
+        display: block;
+        position: relative;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+      }
+
+      .glowing-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0.7;
+        filter: blur(1em);
+        transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+        background: var(--glow-color);
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .glowing-btn:hover {
+        color: rgba(0, 0, 0, 0.8);
+        border-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .glowing-btn:hover span {
+        opacity: 0;
+      }
+
+      .glowing-btn:hover::before {
+        opacity: 1;
+      }
+
+      .footer {
+        color: #fff;
+        position: absolute;
+        bottom: 20px;
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',1)">Easy</button>
+    <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',2)">Normal</button>
+    <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',3)">Hard</button>
+
+    <div class="footer">
+      <span>© 2024 Ruth Seadya</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="homegame.html">
+</head>
+
+<style>
+
+
+:root {
+  --bar-scale-y: 0;
+  --sparkle-color: rgb(253 244 215 / 40%);
+}
+
+@keyframes pop-word {
+  to {
+    transform: rotateX(0);
+  }
+}
+
+@keyframes show {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bar-scale {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0);
+  }
+
+  60% {
+    transform: scale(1) translate(4px, 1px) rotate(8deg);
+  }
+
+  100% {
+    transform: scale(0) translate(4px, 1px) rotate(8deg);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    text-shadow: 0 0 8px rgb(58, 112, 51);
+  }
+}
+
+body {
+  display: grid;
+  height: 100vh;
+
+  background-color: black;
+  place-items: center;
+}
+
+h1 {
+    margin-top: 50px; /* יש לשנות את המרחק לפי הצורך */
+  position: relative;
+  top: -50px;
+  color: white;
+  font-family: "Playfair Display", Vidaloka, serif;
+  font-size: 8rem;
+
+  line-height: 0.85;
+  perspective: 500px;
+}
+
+.word {
+  display: block;
+
+  animation: show 0.01s forwards, pop-word 1.5s forwards;
+  animation-timing-function: cubic-bezier(0.14, 1.23, 0.33, 1.16);
+  opacity: 0;
+
+  transform: rotateX(120deg);
+  transform-origin: 50% 100%;
+}
+
+.word:nth-of-type(2) {
+  padding: 0 2rem;
+
+  animation-delay: 1.5s;
+
+  color: rgb(0, 255, 98);
+}
+
+.superscript {
+  position: relative;
+  animation-delay: 3.6s;
+
+  animation-duration: 0.25s;
+  animation-name: shimmer;
+
+  vertical-align: text-top;
+}
+
+/* bars */
+.superscript::before {
+  --bar-width: 25%;
+
+  position: absolute;
+
+  top: 37%;
+  left: 47%;
+  width: 14%;
+  height: 48%;
+
+  animation: bar-scale 0.25s linear 3s 1 forwards;
+
+  background: linear-gradient(
+    to right,
+    white var(--bar-width),
+    transparent var(--bar-width) calc(100% - var(--bar-width)),
+    white calc(100% - var(--bar-width))
+  );
+
+  content: "";
+
+  transform: scaleY(var(--bar-scale-y));
+}
+
+/* sparkle */
+.superscript::after {
+  --size: 10rem;
+
+  position: absolute;
+
+  top: -5%;
+  left: -85%;
+
+  width: var(--size);
+  height: var(--size);
+
+  animation: sparkle 0.4s linear 3.5s 1 forwards;
+
+  background: radial-gradient(
+      circle at center,
+      rgb(252 249 241 / 94%) 0% 7%,
+      transparent 7% 100%
+    ),
+    conic-gradient(
+      transparent 0deg 18deg,
+      var(--sparkle-color) 18deg,
+      transparent 20deg 40deg,
+      var(--sparkle-color) 40deg,
+      transparent 43deg 87deg,
+      var(--sparkle-color) 87deg,
+      transparent 95deg 175deg,
+      var(--sparkle-color) 175deg,
+      transparent 178deg 220deg,
+      var(--sparkle-color) 220deg,
+      transparent 222deg 270deg,
+      var(--sparkle-color) 270deg,
+      transparent 275deg 300deg,
+      var(--sparkle-color) 300deg,
+      transparent 303deg 360deg
+    );
+
+  border-radius: 50%;
+  clip-path: polygon(
+    50% 0,
+    59.13% 26.64%,
+    85.13% -2.35%,
+    100% 50%,
+    50% 100%,
+    0 50%,
+    31.39% 34.86%
+  );
+
+  content: "";
+
+  filter: blur(1px);
+
+  transform: scale(0);
+}
+
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 5rem;
+  }
+
+  /* sparkle */
+  .superscript::after {
+    --size: 6rem;
+  }
+}
+
+
+
+/*כפתורים*/
+:root {
+ 
+  --hue: 310; /* change me (0-360) */
+  --hue-adjust: 135; /* and me */
+
+  --hue-2: calc(var(--hue) + var(--hue-adjust));
+
+  --page-background: oklch(10% 0.0666 var(--hue));
+}
+
+button {
+  --button-background: oklch(20% 0.0666 var(--hue));
+  --text-base: oklch(45% 0.175 var(--hue));
+  --text-hover: oklch(95% 0.145 calc(var(--hue) + 30));
+
+  --shadow-start: oklch(95% 0.145 var(--hue-2));
+  --shadow-end: oklch(60% 0.29 var(--hue));
+
+  /* No color function, so we can use different opacity values */
+  --shadow-inner: 60% 0.29 var(--hue);
+
+  all: unset;
+
+  /* Text */
+  color: rgb(121, 250, 121);
+  font: 700 1.125rem/1.2 Raleway, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+
+  /* Button sizing */
+  padding: 0.85em;
+  max-width: 100%;
+  width: 12em;
+
+  /* Button styling */
+  background-color: black;
+  background-clip: padding-box;
+  border: 5px solid var(--text-base);
+  border-radius: 2em;
+  border-color: rgb(174, 255, 174);
+  cursor: pointer;
+
+  /* Effects */
+  position: relative;
+  transition: 0.25s ease-out;
+
+  /* Set up pseudo elements */
+  &::before,
+  &::after {
+    content: "";
+    border-radius: inherit;
+    transition: inherit;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Gradient shadow */
+  &::before {
+    /* Position */
+    inset: -0.2em;
+    z-index: -1;
+
+    /* Effect */
+    background: linear-gradient(var(--shadow-start), var(--shadow-end));
+    filter: blur(1.2em) saturate(1.2);
+
+    /* Animation */
+    transform-origin: bottom;
+    transform: scaleY(0.5);
+    opacity: 0;
+  }
+
+  /* Semi-transparent blended box-shadow brightens up the border */
+  &::after {
+    /* Effect */
+    box-shadow: inset 0 0 0 1px #fff, /* inner pixel */
+      0 0 0 4px hsla(0deg, 0%, 100%, 0.5), /* lightened border */
+      1px 1px 0 4px #fff; /* outer pixel */
+    mix-blend-mode: overlay;
+
+    /* Animation */
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: green;
+
+    /*  Lighten border */
+    border-color: green;
+
+    /* Inner shadow */
+    box-shadow:
+      inset 0 1.4em 0 oklch(var(--shadow-inner) / 0.1), /* gloss */
+      inset 0 0 1.4em oklch(var(--shadow-inner) / 0.32), /* inner glow */
+      0 1px 1px oklch(var(--shadow-inner) / 0.32); /* bottom line */
+
+    /* Show effects */
+    &::before,
+    &::after {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
+/* Page styling, ignore */
+body {
+  background: var(--page-background);
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+    
+</style>
+<body>
+    <div?>
+    <h1>
+        <span class="word">Sudoku<span class="superscript">R</span> </span>
+        <span class="word">Game</span>
+      </h1>
+    </div>
+    <div>
+        <button onclick="window.location.href='instruction.html'">Instructions</button>
+        <span style="margin-right: 30px;"></span>
+
+        <button onclick="window.location.href='homegame.html'">Strart Play</button>
+
+    </div>
+</body>
+</html>

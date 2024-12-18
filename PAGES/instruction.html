@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .bubble {
+  --r: 25px; /* the radius */
+  --t: 30px; /* the size of the tail */
+  
+  max-width: 300px;
+  padding: calc(2*var(--r)/3);
+  -webkit-mask: 
+    radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
+      var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+    conic-gradient(at var(--r) var(--r),#000 75%,#0000 0) 
+      calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
+    radial-gradient(50% 50%,#000 98%,#0000 101%) 
+      0 0/var(--r) var(--r) space padding-box;
+  background: linear-gradient(135deg,#a2ec8b,#616669) border-box;
+  color: #fff;
+}
+.left {
+  --_d: 0%;
+  border-left: var(--t) solid #0000;
+  margin-right: var(--t);
+  place-self: start;
+}
+.right {
+  --_d: 100%;
+  border-right: var(--t) solid #0000;
+  margin-left: var(--t);
+  place-self: end;
+}
+
+body {
+    background-color: #000;
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  gap: 20px;
+  font-family: system-ui, sans-serif;
+  font-size: 20px;
+}
+</style>
+
+<body>
+  <br>
+    <div class="bubble right">Hi, I'm interested in knowing how to play, can you explain to me?
+    </div>
+    <div class="bubble left">Hi welcome to my sudoku game! I'm Ruth and I'm happy to explain to you how to play: the Sudoku game works like this: in each row, 
+      column and square you must fill in the digits from 1 to 9 each digit only once.
+
+        </div>
+<div class="bubble right">What is the purpose of the game?
+</div>
+<div class="bubble left"> The goal of the game is to correctly fill the entire board according to the rules.
+</div>
+<div class="bubble right">Am I limited in time?
+</div>
+<div class="bubble left">Yes you are limited to 15 minutes per game, of course if you will get disqualified you have the option to start over
+</div>
+<div class="bubble right">Thank you!</div>
+<div class="bubble right">👌</div>
+<br>
+</body>
+</html>

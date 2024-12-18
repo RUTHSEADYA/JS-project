@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סודוקו</title>
+    <script>
+      window.onload = function() {
+    let userName = prompt("Please enter your name:");
+    if (userName !== null && userName !== "") {
+        sessionStorage.setItem("userName", userName);
+        let gameState = JSON.parse(localStorage.getItem('sudokuGameState'));
+        if (gameState && gameState.userName === userName) {
+            board = gameState.boardState;
+            timerCount = gameState.timerCount;
+            sessionStorage.setItem("level", gameState.level);
+            resumeTimer();
+            // Add code to display or initialize the saved game board here
+        } else {
+            let level = parseInt(sessionStorage.getItem("level"));
+            setGame(level);
+            startTimer();
+        }
+    } else {
+        alert("Please enter a valid name.");
+    }
+};
+
+function saveGameState() {
+    let userName = sessionStorage.getItem("userName");
+    if (userName !== null && userName !== "") {
+        let gameState = {
+            boardState: board,
+            timerCount: timerCount,
+            level: parseInt(sessionStorage.getItem("level")),
+            userName: userName
+        };
+        localStorage.setItem('sudokuGameState', JSON.stringify(gameState));
+    } else {
+        alert("Please enter a valid name.");
+    }
+}
+     
+     function animateButton(button, page, level) {
+        button.classList.add("animate"); // הוסף לכפתור ה-CSS "animate"
+        setTimeout(function() {
+          button.classList.remove("animate"); // הסר את כיתוב ה-CSS "animate" לאחר 0.3 שניות
+          sessionStorage.setItem("level", level);
+          window.location.href = page; // ניתוב לדף היעד
+        }, 300);
+      }
+
+      function saveName() {
+        let playerName = document.querySelector('.nameInput').value;
+        localStorage.setItem('playerName', playerName);
+        checkNameAndDisplay(); // בדוק את השם והצג הודעה רלוונטית
+      }
+
+      function welcomeMessage(playerName) {
+        let welcomeText = document.querySelector('.welcome-text');
+        if (playerName) {
+          welcomeText.textContent = 'Come on ' + playerName +','+ ' Play!';
+        } else {
+          welcomeText.textContent = 'welcome';
+        }
+      }
+
+      window.onload = function() {
+        let playerName = localStorage.getItem('playerName');
+        welcomeMessage(playerName);
+      };
+      function checkNameAndDisplay() {
+    let playerName = document.querySelector('.nameInput').value;
+    let storedName = localStorage.getItem('playerName');
+    let welcomeText = document.querySelector('.welcome-text');
+
+    if (playerName && playerName === storedName) {
+        welcomeMessage(playerName); // אם השם זהה לשם בזיכרון, הצג הודעה רלוונטית
+    } else {
+        if (storedName) {
+            welcomeMessage(null); // אם יש שם מאוחסן בזיכרון, אל תשנה את הטקסט
+        } else {
+            welcomeMessage(''); // אם אין שם מאוחסן בזיכרון, הצג את הטקסט "ברוך הבא"
+        }
+    }
+}
+
+      
+    </script>
+
+
+
+    <style>
+     
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #000000; /* צבע לבן */
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 100vw;
+        height: 95vh;
+        margin: 50px auto;
+        background-color: #000000;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ffffff1a;
+        text-align: center;
+        animation: fadein 1s; /* אנימציה של ציפוי */
+       
+      }
+      @keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      h1 {
+        font-size: 36px; /* גודל פונט של הכותרת */
+        font-style: italic;
+        margin-bottom: 20px;
+        color: #ffffff; /* צבע הטקסט של הכותרת */
+      }
+      p {
+        color: #000000; /* צבע הטקסט של הפסקה */
+        margin-bottom: 30px;
+        font-size: 70px; /* גודל פונט של הפסקה */
+        font-family: "Raleway", sans-serif;
+       
+
+
+
+        position: relative;
+        
+      
+        padding: 0.35em 1em;
+        /*border: 0.15em solid var(--glow-color);*/
+        border-radius: 0.45em;
+        background: none;
+        perspective: 1em;
+        font-family: "Raleway", sans-serif;
+        font-size: 2em; /* Changed font size for better readability */
+        font-weight: 900;
+        letter-spacing: 0.1em; /* Adjusted letter spacing */
+        margin-bottom: 20px; /* Added margin for spacing between buttons */
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: color 0.3s ease, border-color 0.3s ease;
+      }
+      
+      .animation-text {
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+@keyframes fade {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+
+  
+}
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.moving-heading {
+  animation: moveUpDown 2s infinite alternate; /* אנימציה של 2 שניות חוזרת ומשנה כיוון */
+  background-color: #ffffff;
+}
+
+
+
+
+:root {
+  --glow-color: hsl(128, 100%, 69%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(22, 22, 22);
+}
+
+.glowing-btn {
+  position: relative;
+  color: var(--glow-color);
+  cursor: pointer;
+  padding: 0.35em 1em;
+  border: 0.15em solid var(--glow-color);
+  border-radius: 0.45em;
+  background: none;
+  perspective: 2em;
+  font-family: "Raleway", sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  letter-spacing: 1em;
+
+  -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  animation: border-flicker 2s linear infinite;
+}
+
+.glowing-txt {
+  float: left;
+  margin-right: -0.8em;
+  -webkit-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em var(--glow-color);
+  -moz-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em var(--glow-color);
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em var(--glow-color);
+  animation: text-flicker 3s linear infinite;
+}
+
+.faulty-letter {
+  opacity: 0.5;
+  animation: faulty-flicker 2s linear infinite;
+}
+
+.glowing-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.7;
+  filter: blur(1em);
+  transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+  background: var(--glow-color);
+  pointer-events: none;
+}
+
+.glowing-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: -1;
+  background-color: var(--glow-color);
+  box-shadow: 0 0 2em 0.2em var(--glow-color);
+  transition: opacity 100ms linear;
+}
+
+.glowing-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+  text-shadow: none;
+  animation: none;
+}
+
+.glowing-btn:hover .glowing-txt {
+  animation: none;
+}
+
+.glowing-btn:hover .faulty-letter {
+  animation: none;
+  text-shadow: none;
+  opacity: 1;
+}
+
+.glowing-btn:hover:before {
+  filter: blur(1.5em);
+  opacity: 1;
+}
+
+.glowing-btn:hover:after {
+  opacity: 1;
+}
+
+@keyframes faulty-flicker {
+  0% {
+    opacity: 0.1;
+  }
+  2% {
+    opacity: 0.1;
+  }
+  4% {
+    opacity: 0.5;
+  }
+  19% {
+    opacity: 0.5;
+  }
+  21% {
+    opacity: 0.1;
+  }
+  23% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  83% {
+    opacity: 0.4;
+  }
+
+  87% {
+    opacity: 1;
+  }
+}
+
+@keyframes text-flicker {
+  0% {
+    opacity: 0.1;
+  }
+
+  2% {
+    opacity: 1;
+  }
+
+  8% {
+    opacity: 0.1;
+  }
+
+  9% {
+    opacity: 1;
+  }
+
+  12% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+  72% {
+    opacity: 0.2;
+  }
+
+  77% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes border-flicker {
+  0% {
+    opacity: 0.1;
+  }
+  2% {
+    opacity: 1;
+  }
+  4% {
+    opacity: 0.1;
+  }
+
+  8% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .glowing-btn{
+    font-size: 1em;
+    margin-bottom: 30px;
+  }
+}
+.nameInput{
+  width: 18vw;
+  height: 9vh;
+  font-size: 19px;
+  border-color: hsl(128, 100%, 69%);
+  border-radius: 6px;
+  border: 5px solid hsl(128, 100%, 69%);
+
+}
+
+      
+    </style>
+    </head>
+    <body onload="welcomeMessage()">
+    
+    <div class="container">
+      
+      <br>
+      <p class="animation-text welcome-text"></p>
+       
+      <p class="animation-text">enter your name:</p>
+      
+      
+      <input type="text" class="nameInput" placeholder="enter your name here:" onkeypress="if(event.keyCode==13) saveName()">
+
+    <br>
+      <p class="animation-text">choose your level:</p>
+     <br>
+     <span style="margin-right: 30px;"></span>
+
+      <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',1)"><span class='glowing-txt'>E<span class='faulty-letter'>A</span>SY</span></button>
+      <span style="margin-right: 30px;"></span>
+
+      <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',2)"><span class='glowing-txt'>N<span class='faulty-letter'>OR</span>MAL</span></button>
+      <span style="margin-right: 30px;"></span>
+
+      <button class='glowing-btn' onclick="animateButton(this, 'gameme.html',3)"><span class='glowing-txt'>H<span class='faulty-letter'>A</span>RD</span></button>
+      <span style="margin-right: 30px;"></span>
+
+
+      <div class="footer vertical-adjust">
+       <br>
+       <br>
+       
+       
+       
+        <span> © 2024 Ruth Seadya</span>
+      </div>
+    </div>
+    
+    
+    </body>
+    </html>
